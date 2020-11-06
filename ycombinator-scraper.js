@@ -1,3 +1,7 @@
+/*Puppeteer Evaluate Method - This method lets us run custom JavaScript code as if we were executing it in the 
+DevTools console. Anything returned from that function gets resolved by the promise. This method is very handy
+when it comes to scraping information or performing custom actions.
+*/
 const puppeteer = require('puppeteer');
 
 function run() {
@@ -24,3 +28,4 @@ function run() {
         }
     })
 }
+run().then(console.log).catch(console.error);
