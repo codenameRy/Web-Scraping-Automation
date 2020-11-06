@@ -5,7 +5,7 @@
 const puppeteer = require ('puppeteer');
 
 //take the URL from command-line arguments
-const url = process.args[2];
+const url = process.argv[2];
 if (!url) {
     throw "Please enter URL as the first segment"
 };
