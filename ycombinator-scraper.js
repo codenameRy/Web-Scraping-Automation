@@ -1,6 +1,12 @@
+//Phase 1 - Display content from page 1
 /*Puppeteer Evaluate Method - This method lets us run custom JavaScript code as if we were executing it in the 
 DevTools console. Anything returned from that function gets resolved by the promise. This method is very handy
 when it comes to scraping information or performing custom actions.
+
+Array
+code passed to the evaluate() method is pretty basic JavaScript that builds an array of objects, each having 
+url and text fields that represent the story URLs we see on https://news.ycombinator.com/.
+
 */
 const puppeteer = require('puppeteer');
 
