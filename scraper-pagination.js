@@ -1,5 +1,6 @@
 const puppeteer = require('puppeteer');
-function run (pagesToScrape) {
+
+function run(pagesToScrape) {
     return new Promise(async (resolve, reject) => {
         try {
             if (!pagesToScrape) {
@@ -7,6 +8,21 @@ function run (pagesToScrape) {
             }
             const browser = await puppeteer.launch();
             const page = await browser.newPage();
+
+            /*interceptor on every request and cancel the ones we don’t really need.
+            we only allow requests with the resource type of "document" to get through 
+            our filter, meaning that we will block all images, CSS, and everything else 
+            besides the original HTML response.
+            */
+            await page.setRequestInterception(true);
+            page.on('request', (request) => {
+                if (request.resourceType() === 'document') {
+                    request.continue();
+                } else {
+                    request.abort();
+                }
+            });
+
             await page.goto('https://news.ycombinator.com/');
             let currentPage = 1;
             let urls = [];
@@ -15,7 +31,7 @@ function run (pagesToScrape) {
                     let results = [];
                     let items = document.querySelectorAll('a.storylink');
                     items.forEach((item) => {
-                        results.push( {
+                        results.push({
                             url: item.getAttribute('href'),
                             text: item.innerText,
                         });
@@ -34,7 +50,7 @@ function run (pagesToScrape) {
             browser.close();
             return resolve(urls);
         } catch (e) {
-            return reject (e);
+            return reject(e);
         }
     })
 }
